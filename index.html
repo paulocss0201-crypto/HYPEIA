@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hype IA — Inteligência Artificial, Marketing e Tecnologia</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --bg: #050506;
+  --bg-2: #0a0a0d;
+  --bg-3: #101013;
+  --white: #f6f6f8;
+  --gray: #8b8b93;
+  --gray-dim: #55555c;
+  --line: rgba(246,246,248,0.09);
+  --line-strong: rgba(246,246,248,0.16);
+  --silver: #d4d4dc;
+  --glow: rgba(255,255,255,0.5);
+  --mono: 'JetBrains Mono', monospace;
+  --display: 'Space Grotesk', sans-serif;
+  --body: 'Inter', sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--body);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{background:var(--white);color:var(--bg);}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+/* ---------- background texture ---------- */
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(246,246,248,0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246,246,248,0.028) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 32px;
+  backdrop-filter:blur(16px);
+  background:rgba(5,5,6,0.55);
+  border-bottom:1px solid transparent;
+  transition:border-color .4s ease, background .4s ease;
+}
+nav.scrolled{border-bottom-color:var(--line);background:rgba(5,5,6,0.82);}
+.logo{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:19px;
+  letter-spacing:-0.02em;
+  display:flex;align-items:center;gap:9px;
+}
+.logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--white);
+  box-shadow:0 0 12px 2px rgba(255,255,255,0.55);
+}
+.nav-cta{
+  font-family:var(--body);font-weight:600;font-size:13px;
+  color:var(--bg);background:var(--white);
+  padding:11px 22px;border-radius:100px;
+  text-decoration:none;letter-spacing:0.01em;
+  transition:transform .25s ease, box-shadow .25s ease;
+  white-space:nowrap;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,0.18);}
+.nav-cta-short{display:none;}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--body);font-weight:600;font-size:14.5px;
+  padding:15px 30px;border-radius:100px;
+  text-decoration:none;cursor:pointer;border:1px solid transparent;
+  transition:all .3s cubic-bezier(.2,.8,.2,1);
+  white-space:nowrap;
+}
+.btn-primary{
+  background:var(--white);color:var(--bg);
+}
+.btn-primary:hover{
+  box-shadow:0 0 0 1px rgba(255,255,255,0.4), 0 10px 40px rgba(255,255,255,0.22);
+  transform:translateY(-2px);
+}
+.btn-ghost{
+  background:transparent;color:var(--white);border-color:var(--line-strong);
+}
+.btn-ghost:hover{
+  border-color:var(--silver);background:rgba(255,255,255,0.04);
+  transform:translateY(-2px);
+}
+.btn-arrow{transition:transform .3s ease;}
+.btn:hover .btn-arrow{transform:translateX(4px);}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:140px 0 80px;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1.05fr 0.95fr;
+  gap:40px;align-items:center;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:12px;letter-spacing:0.08em;
+  color:var(--gray);text-transform:uppercase;
+  border:1px solid var(--line);padding:7px 14px;border-radius:100px;
+  margin-bottom:28px;opacity:0;
+  animation:fadeUp .8s ease forwards .1s;
+}
+.eyebrow span{width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,0.7);animation:pulse 2s ease-in-out infinite;}
+
+.hero h1{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(2rem, 3.6vw, 3.4rem);
+  line-height:1.15;
+  letter-spacing:-0.03em;
+  color:var(--white);
+  opacity:0;
+  min-height:2.9em;
+  animation:fadeUp .9s ease forwards .25s;
+}
+.hero h1 .typed-wrap{
+  display:inline-block;
+  min-width:1ch;
+  white-space:nowrap;
+  border-right:2px solid var(--white);
+  padding-right:4px;
+  background:linear-gradient(90deg, #fff, #b9b9c2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero-sub{
+  margin-top:26px;
+  font-size:17.5px;line-height:1.65;
+  color:var(--gray);max-width:520px;
+  opacity:0;animation:fadeUp .9s ease forwards .4s;
+}
+.hero-ctas{
+  margin-top:38px;display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .9s ease forwards .55s;
+}
+.hero-reinforce{
+  margin-top:22px;font-size:13.5px;color:var(--gray-dim);
+  display:flex;align-items:center;gap:8px;
+  opacity:0;animation:fadeUp .9s ease forwards .7s;
+}
+.hero-reinforce::before{content:'';width:14px;height:1px;background:var(--gray-dim);}
+
+/* ---------- hologram planet ---------- */
+.holo-stage{
+  position:relative;
+  height:520px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;animation:fadeIn 1.4s ease forwards .5s;
+}
+.holo-glow{
+  position:absolute;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.02) 45%, transparent 70%);
+  filter:blur(6px);
+  animation:breathe 5s ease-in-out infinite;
+}
+.holo-core{
+  position:relative;width:300px;height:300px;
+}
+.planet-svg{
+  width:100%;height:100%;
+  animation:spin 26s linear infinite;
+  filter:drop-shadow(0 0 22px rgba(255,255,255,0.25));
+}
+.holo-particles{
+  position:absolute;inset:0;
+}
+.particle{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:#fff;box-shadow:0 0 6px 1px rgba(255,255,255,0.7);
+  animation:orbit linear infinite;
+}
+.holo-ring{
+  position:absolute;border-radius:50%;border:1px solid var(--line);
+}
+
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes breathe{0%,100%{opacity:0.7;transform:scale(1);}50%{opacity:1;transform:scale(1.06);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+@keyframes orbit{
+  from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg);}
+  to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg);}
+}
+
+/* ---------- section shell ---------- */
+section{position:relative;z-index:1;padding:130px 0;}
+.section-head{max-width:680px;margin-bottom:64px;}
+.tag{
+  font-family:var(--mono);font-size:12px;letter-spacing:0.1em;
+  color:var(--gray-dim);text-transform:uppercase;margin-bottom:18px;
+  display:block;
+}
+.section-head h2{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(1.8rem, 3vw, 2.6rem);
+  line-height:1.18;letter-spacing:-0.02em;color:var(--white);
+}
+.section-head p{
+  margin-top:18px;font-size:16.5px;line-height:1.7;color:var(--gray);
+}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ---------- pain section ---------- */
+.pain-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.pain-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+  border:1px solid var(--line);
+  border-radius:18px;padding:32px;
+  transition:border-color .3s ease, transform .3s ease, background .3s ease;
+}
+.pain-card:hover{border-color:var(--line-strong);transform:translateY(-4px);background:rgba(255,255,255,0.045);}
+.pain-num{font-family:var(--mono);font-size:12px;color:var(--gray-dim);display:block;margin-bottom:16px;}
+.pain-card h3{font-family:var(--display);font-size:19px;font-weight:600;margin-bottom:12px;letter-spacing:-0.01em;}
+.pain-card p{font-size:14.5px;line-height:1.6;color:var(--gray);}
+
+.impact-line{
+  text-align:center;font-family:var(--display);font-weight:600;
+  font-size:clamp(1.4rem,2.6vw,2rem);letter-spacing:-0.02em;
+  padding:60px 0 0;color:var(--white);
+}
+.impact-line em{font-style:normal;color:var(--gray);}
+
+/* ---------- solution ---------- */
+.solution-box{
+  border:1px solid var(--line);border-radius:24px;
+  padding:64px;
+  background:radial-gradient(ellipse 100% 100% at 0% 0%, rgba(255,255,255,0.05), transparent 60%);
+  position:relative;overflow:hidden;
+}
+.solution-box::after{
+  content:'';position:absolute;top:-1px;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+}
+.solution-box h2{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(1.7rem,3vw,2.4rem);line-height:1.2;letter-spacing:-0.02em;
+  max-width:760px;
+}
+.solution-box p{margin-top:22px;font-size:16px;line-height:1.7;color:var(--gray);max-width:640px;}
+
+/* ---------- services ---------- */
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.service-card{
+  grid-column:span 1;
+  border:1px solid var(--line);border-radius:20px;
+  padding:34px 30px;
+  background:rgba(255,255,255,0.02);
+  backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;height:100%;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s ease, background .35s ease;
+  position:relative;
+}
+.service-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--line-strong);
+  background:rgba(255,255,255,0.045);
+}
+.service-icon{
+  width:44px;height:44px;border-radius:12px;
+  border:1px solid var(--line-strong);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;color:var(--white);
+}
+.service-card h3{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-0.01em;margin-bottom:12px;}
+.service-card>p{font-size:14.5px;line-height:1.65;color:var(--gray);margin-bottom:22px;}
+.service-card ul{list-style:none;margin-bottom:28px;flex-grow:1;}
+.service-card ul li{
+  font-size:13.5px;color:var(--silver);padding-left:18px;position:relative;
+  margin-bottom:10px;line-height:1.5;
+}
+.service-card ul li::before{
+  content:'';position:absolute;left:0;top:7px;width:6px;height:1px;background:var(--gray);
+}
+.service-cta{
+  font-family:var(--body);font-weight:600;font-size:13.5px;color:var(--white);
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  padding-top:16px;border-top:1px solid var(--line);
+}
+.service-cta .arrow{transition:transform .3s ease;}
+.service-card:hover .arrow{transform:translateX(5px);}
+
+/* ---------- differentiation ---------- */
+.diff-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.diff-card{
+  border:1px solid var(--line);border-radius:16px;padding:26px 22px;
+  background:var(--bg-2);
+  transition:border-color .3s ease, transform .3s ease;
+}
+.diff-card:hover{border-color:var(--line-strong);transform:translateY(-4px);}
+.diff-mark{font-family:var(--mono);font-size:11px;color:var(--gray-dim);margin-bottom:20px;display:block;}
+.diff-card h3{font-family:var(--display);font-size:15.5px;font-weight:600;margin-bottom:10px;letter-spacing:-0.01em;}
+.diff-card p{font-size:13px;line-height:1.55;color:var(--gray);}
+
+/* ---------- process ---------- */
+.process-list{border-top:1px solid var(--line);}
+.process-item{
+  display:grid;grid-template-columns:80px 1fr 1fr;gap:24px;
+  padding:34px 0;border-bottom:1px solid var(--line);
+  align-items:start;
+  transition:background .3s ease;
+}
+.process-item:hover{background:rgba(255,255,255,0.02);}
+.process-step{font-family:var(--mono);font-size:13px;color:var(--gray-dim);padding-top:4px;}
+.process-item h3{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-0.01em;}
+.process-item p{font-size:14.5px;line-height:1.65;color:var(--gray);}
+
+/* ---------- transformation ---------- */
+.transform-section{
+  text-align:center;
+}
+.transform-section .section-head{margin:0 auto 40px;text-align:center;}
+.transform-quote{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(1.5rem,2.8vw,2.1rem);
+  line-height:1.35;letter-spacing:-0.02em;
+  max-width:820px;margin:0 auto;
+  background:linear-gradient(90deg,#fff,#9c9ca4,#fff);
+  background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 6s linear infinite;
+}
+@keyframes shine{to{background-position:200% center;}}
+
+/* ---------- ai ecosystem ---------- */
+.eco-wrap{
+  display:flex;justify-content:center;align-items:center;
+  padding-top:16px;
+}
+.eco-svg{
+  width:100%;max-width:460px;height:auto;
+  overflow:visible;
+}
+.eco-rotate{
+  transform-origin:200px 200px;
+  animation:eco-spin 90s linear infinite;
+}
+@keyframes eco-spin{to{transform:rotate(360deg);}}
+
+.eco-hub-glow{animation:breathe 5s ease-in-out infinite;}
+.eco-hub-core{filter:drop-shadow(0 0 14px rgba(255,255,255,0.3));}
+
+.eco-node{
+  animation:eco-node-pulse 3.4s ease-in-out infinite;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+@keyframes eco-node-pulse{
+  0%,100%{opacity:0.55;filter:drop-shadow(0 0 0 rgba(255,255,255,0));}
+  50%{opacity:1;filter:drop-shadow(0 0 9px rgba(255,255,255,0.55));}
+}
+
+.eco-caption{
+  text-align:center;margin-top:8px;font-family:var(--mono);
+  font-size:12px;letter-spacing:0.06em;color:var(--gray-dim);
+  text-transform:uppercase;
+}
+
+/* ---------- who for ---------- */
+.for-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;}
+.for-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 0;border-bottom:1px solid var(--line);
+}
+.for-check{
+  width:20px;height:20px;border-radius:50%;border:1px solid var(--line-strong);
+  flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+}
+.for-check::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--white);}
+.for-item p{font-size:15px;line-height:1.5;color:var(--silver);}
+
+/* ---------- value proof ---------- */
+.proof-wrap{
+  border:1px solid var(--line);border-radius:24px;padding:60px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+}
+.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-top:8px;}
+.proof-item{background:var(--bg-2);padding:26px 22px;transition:background .3s ease;}
+.proof-item:hover{background:#131316;}
+.proof-item p{font-size:14px;color:var(--white);font-weight:500;line-height:1.5;}
+.proof-support{margin-top:36px;font-size:15px;line-height:1.7;color:var(--gray);max-width:680px;}
+
+/* ---------- final cta ---------- */
+.final-cta{
+  position:relative;overflow:hidden;
+  padding:150px 0;
+  text-align:center;
+}
+.final-holo{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:900px;height:900px;
+  background:radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
+  pointer-events:none;
+}
+.final-ring{
+  position:absolute;top:50%;left:50%;
+  border:1px solid var(--line);border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.final-cta h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.1;letter-spacing:-0.03em;
+  max-width:800px;margin:0 auto;position:relative;
+}
+.final-cta .section-sub{
+  margin:24px auto 44px;font-size:17px;color:var(--gray);max-width:560px;line-height:1.65;position:relative;
+}
+.final-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;}
+.final-line{
+  margin-top:56px;font-family:var(--mono);font-size:13px;letter-spacing:0.05em;
+  color:var(--gray-dim);position:relative;
+}
+
+/* ---------- faq ---------- */
+.faq-list{border-top:1px solid var(--line);max-width:820px;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  background:none;border:none;text-align:left;cursor:pointer;
+  padding:28px 0;color:var(--white);
+  font-family:var(--display);font-size:16.5px;font-weight:600;letter-spacing:-0.01em;
+}
+.faq-q:hover{color:var(--silver);}
+.faq-icon{
+  flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--line-strong);
+  display:flex;align-items:center;justify-content:center;position:relative;
+  transition:transform .35s ease, border-color .3s ease;
+}
+.faq-icon::before,.faq-icon::after{
+  content:'';position:absolute;background:var(--white);
+  transition:opacity .25s ease;
+}
+.faq-icon::before{width:10px;height:1px;}
+.faq-icon::after{width:1px;height:10px;}
+.faq-item.open .faq-icon{transform:rotate(135deg);border-color:var(--silver);}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .45s cubic-bezier(.2,.8,.2,1), padding .45s ease;
+  font-size:14.5px;line-height:1.75;color:var(--gray);
+}
+.faq-item.open .faq-a{max-height:600px;padding-bottom:28px;}
+.faq-a ul{margin:10px 0 6px 0;list-style:none;}
+.faq-a ul li{padding-left:18px;position:relative;margin-bottom:8px;}
+.faq-a ul li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:1px;background:var(--gray-dim);}
+.faq-cta-row{margin-top:52px;display:flex;justify-content:center;}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:1px solid var(--line);
+  padding:40px 0;
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;z-index:1;
+}
+footer p{font-size:13px;color:var(--gray-dim);}
+.footer-motto{font-family:var(--mono);font-size:12px;color:var(--gray-dim);letter-spacing:0.03em;}
+
+/* ---------- responsive ---------- */
+@media (max-width: 980px){
+  .hero-grid{grid-template-columns:1fr;}
+  .holo-stage{order:-1;height:340px;}
+  .pain-grid{grid-template-columns:1fr;}
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .diff-grid{grid-template-columns:repeat(2,1fr);}
+  .for-grid{grid-template-columns:1fr;}
+  .proof-grid{grid-template-columns:repeat(2,1fr);}
+  .process-item{grid-template-columns:50px 1fr;}
+  .process-item h3{grid-column:2 / 3;}
+  .process-item p{grid-column:2 / 3;}
+  .solution-box{padding:40px 28px;}
+  .proof-wrap{padding:36px 24px;}
+  .final-ring{display:none;}
+}
+@media (max-width: 620px){
+  .wrap{padding:0 20px;}
+  section{padding:80px 0;}
+  .services-grid{grid-template-columns:1fr;}
+  .diff-grid{grid-template-columns:1fr;}
+  .proof-grid{grid-template-columns:1fr;}
+  .hero{padding:110px 0 56px;min-height:auto;}
+  .hero-ctas{flex-direction:column;align-items:stretch;}
+  .hero-ctas .btn{justify-content:center;}
+  nav{padding:16px 18px;}
+  .logo{font-size:17px;}
+  footer{flex-direction:column;gap:10px;text-align:center;}
+  .solution-box{border-radius:18px;padding:32px 22px;}
+  .holo-stage{height:260px;margin-bottom:8px;}
+  .holo-core{width:220px;height:220px;}
+  .holo-glow{width:300px;height:300px;}
+  .holo-ring{display:none;}
+  .section-head{margin-bottom:44px;}
+  .pain-card{padding:26px 22px;}
+  .service-card{padding:28px 24px;}
+  .diff-grid{gap:14px;}
+  .process-item{padding:26px 0;}
+  .final-cta{padding:110px 0;}
+  .final-holo{width:600px;height:600px;}
+  .proof-wrap{padding:28px 18px;border-radius:18px;}
+  .proof-item{padding:20px 16px;}
+  .faq-q{font-size:15px;padding:22px 0;gap:14px;}
+  .transform-quote{font-size:1.4rem;line-height:1.3;}
+  .hero h1{font-size:1.9rem;line-height:1.18;min-height:2.6em;}
+  .hero-sub{font-size:15.5px;margin-top:18px;}
+  .section-head h2{font-size:1.5rem;line-height:1.25;}
+  .section-head p{font-size:14.5px;margin-top:12px;}
+  .section-head{margin-bottom:36px;}
+  .solution-box h2{font-size:1.4rem !important;line-height:1.28;}
+  .solution-box p{font-size:14.5px;margin-top:14px;}
+  .impact-line{font-size:1.15rem;padding-top:36px;}
+  .service-card h3{font-size:18px;}
+  .diff-card h3{font-size:14.5px;}
+  .process-item h3{font-size:16.5px;}
+  .tag{font-size:11px;margin-bottom:12px;}
+  .eco-svg{max-width:300px;}
+  .eco-rotate{animation-duration:60s;}
+}
+@media (max-width: 400px){
+  .nav-cta-full{display:none;}
+  .nav-cta-short{display:inline;}
+  .btn{padding:14px 22px;font-size:13.5px;}
+  .hero h1{font-size:1.7rem;min-height:3em;}
+  .eyebrow{font-size:10.5px;padding:6px 12px;}
+  .section-head h2{font-size:1.3rem;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav id="nav">
+  <div class="logo"><span class="logo-dot"></span>HYPE IA</div>
+  <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="nav-cta"><span class="nav-cta-full">Quero transformar minha empresa</span><span class="nav-cta-short">Falar agora</span></a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span></span>IA · MARKETING · TECNOLOGIA</div>
+      <h1>Sua empresa vendendo mais com <span class="typed-wrap" id="typed"></span> trabalhando juntos.</h1>
+      <p class="hero-sub">A Hype IA cria soluções digitais inteligentes para empresas que querem atrair mais clientes, automatizar processos e acelerar seus resultados com uma estrutura moderna, estratégica e escalável.</p>
+      <div class="hero-ctas">
+        <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="btn btn-primary">Quero transformar minha empresa <span class="btn-arrow">→</span></a>
+        <a href="#servicos" class="btn btn-ghost">Conhecer soluções</a>
+      </div>
+      <div class="hero-reinforce">Soluções para empresas que querem parar de operar no improviso e começar a crescer com estratégia.</div>
+    </div>
+
+    <div class="holo-stage">
+      <div class="holo-glow"></div>
+      <div class="holo-ring" style="width:420px;height:420px;"></div>
+      <div class="holo-ring" style="width:480px;height:480px;opacity:0.5;"></div>
+      <div class="holo-core">
+        <svg class="planet-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="planetGrad" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+              <stop offset="55%" stop-color="#ffffff" stop-opacity="0.04"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="100" cy="100" r="70" fill="url(#planetGrad)" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.5"/>
+          <ellipse cx="100" cy="100" rx="95" ry="26" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="0.9"/>
+          <ellipse cx="100" cy="100" rx="95" ry="26" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.5" transform="rotate(8 100 100)"/>
+          <ellipse cx="100" cy="100" rx="88" ry="18" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" transform="rotate(-6 100 100)"/>
+          <g stroke="rgba(255,255,255,0.25)" stroke-width="0.4">
+            <path d="M 40 70 Q 100 90 160 70" fill="none"/>
+            <path d="M 32 100 Q 100 118 168 100" fill="none"/>
+            <path d="M 40 130 Q 100 148 160 130" fill="none"/>
+          </g>
+          <g stroke="rgba(255,255,255,0.2)" stroke-width="0.4">
+            <path d="M 70 32 Q 88 100 70 168" fill="none"/>
+            <path d="M 100 30 L 100 170" fill="none"/>
+            <path d="M 130 32 Q 112 100 130 168" fill="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="holo-particles" id="particles"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOR -->
+<section id="problema">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">O cenário atual</span>
+      <h2>O mercado mudou. Sua empresa não pode continuar vendendo como antes.</h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card reveal">
+        <span class="pain-num">01</span>
+        <h3>Seu marketing não gera vendas</h3>
+        <p>Muitos negócios postam todos os dias, mas não possuem uma estratégia clara para transformar atenção em clientes.</p>
+      </div>
+      <div class="pain-card reveal">
+        <span class="pain-num">02</span>
+        <h3>Seu atendimento perde oportunidades</h3>
+        <p>Leads chegam, mas demoram para ser respondidos ou não recebem um acompanhamento comercial eficiente.</p>
+      </div>
+      <div class="pain-card reveal">
+        <span class="pain-num">03</span>
+        <h3>Seu site não converte</h3>
+        <p>Uma presença digital bonita não basta. Seu site precisa comunicar valor, gerar confiança e vender.</p>
+      </div>
+      <div class="pain-card reveal">
+        <span class="pain-num">04</span>
+        <h3>Sua empresa faz tudo manualmente</h3>
+        <p>Processos repetitivos travam o crescimento e consomem tempo que poderia ser usado para vender mais.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO -->
+<section id="solucao">
+  <div class="wrap">
+    <div class="solution-box reveal">
+      <span class="tag">A abordagem Hype IA</span>
+      <h2>Unimos estratégia, tecnologia e inteligência artificial para acelerar o crescimento da sua empresa.</h2>
+      <p>Criamos soluções digitais que ajudam sua empresa a se posicionar melhor, gerar mais oportunidades e transformar processos manuais em sistemas inteligentes.</p>
+      <div class="impact-line">Menos improviso. <em>Mais estratégia.</em> Mais automação. <em>Mais vendas.</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">Nossas soluções</span>
+      <h2>Tudo que sua empresa precisa para crescer com presença, tecnologia e inteligência artificial.</h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-icon">◧</div>
+        <h3>Landing Pages</h3>
+        <p>Páginas de alta conversão com design profissional, copy persuasiva e estrutura estratégica para transformar visitantes em leads e clientes.</p>
+        <ul>
+          <li>Design premium e responsivo</li>
+          <li>Copy focada em conversão</li>
+          <li>Estrutura pensada para tráfego pago</li>
+          <li>Páginas rápidas e modernas</li>
+        </ul>
+        <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="service-cta">Criar minha landing page <span class="arrow">→</span></a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">▦</div>
+        <h3>Design de Posts</h3>
+        <p>Criativos, posts e carrosséis com visual profissional para fortalecer sua marca, aumentar percepção de valor e gerar mais engajamento.</p>
+        <ul>
+          <li>Identidade visual forte</li>
+          <li>Carrosséis estratégicos</li>
+          <li>Criativos para campanhas</li>
+          <li>Foco em autoridade e conversão</li>
+        </ul>
+        <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="service-cta">Melhorar meu posicionamento <span class="arrow">→</span></a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">◎</div>
+        <h3>Agentes de IA para Vendas</h3>
+        <p>Agentes inteligentes para atendimento, qualificação de leads e apoio comercial, ajudando sua empresa a responder mais rápido e vender com mais eficiência.</p>
+        <ul>
+          <li>Atendimento automatizado</li>
+          <li>Qualificação de leads</li>
+          <li>Respostas rápidas e estratégicas</li>
+          <li>Mais oportunidades aproveitadas</li>
+        </ul>
+        <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="service-cta">Automatizar minhas vendas <span class="arrow">→</span></a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">✳</div>
+        <h3>Agentes de IA para Marketing</h3>
+        <p>Agentes de inteligência artificial para ajudar na criação de conteúdo, ideias de campanhas, roteiros, copies, planejamento e produção estratégica.</p>
+        <ul>
+          <li>Criação de conteúdo com IA</li>
+          <li>Planejamento de posts</li>
+          <li>Geração de ideias e campanhas</li>
+          <li>Mais produtividade para sua equipe</li>
+        </ul>
+        <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="service-cta">Automatizar meu marketing <span class="arrow">→</span></a>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">⌗</div>
+        <h3>Soluções Tech</h3>
+        <p>Soluções digitais personalizadas para empresas que precisam organizar processos, criar sistemas, integrar ferramentas e melhorar sua operação.</p>
+        <ul>
+          <li>Sistemas internos</li>
+          <li>Integrações e automações</li>
+          <li>Dashboards</li>
+          <li>Estruturas digitais sob medida</li>
+        </ul>
+        <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="service-cta">Criar minha solução tech <span class="arrow">→</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAÇÃO -->
+<section id="diferenciais">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">Diferenciais</span>
+      <h2>Por que escolher a Hype IA?</h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card reveal">
+        <span class="diff-mark">—</span>
+        <h3>Pensamento estratégico</h3>
+        <p>Não criamos apenas peças bonitas. Criamos soluções conectadas com o objetivo do negócio.</p>
+      </div>
+      <div class="diff-card reveal">
+        <span class="diff-mark">—</span>
+        <h3>Tecnologia aplicada ao resultado</h3>
+        <p>Usamos IA e automação para resolver problemas reais, não apenas para parecer moderno.</p>
+      </div>
+      <div class="diff-card reveal">
+        <span class="diff-mark">—</span>
+        <h3>Design premium</h3>
+        <p>Sua marca precisa transmitir autoridade, confiança e profissionalismo desde o primeiro contato.</p>
+      </div>
+      <div class="diff-card reveal">
+        <span class="diff-mark">—</span>
+        <h3>Foco em conversão</h3>
+        <p>Cada página, post, agente ou sistema é pensado para gerar ação, oportunidade e crescimento.</p>
+      </div>
+      <div class="diff-card reveal">
+        <span class="diff-mark">—</span>
+        <h3>Soluções personalizadas</h3>
+        <p>Entendemos o momento da sua empresa e criamos uma estrutura alinhada com sua realidade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section id="processo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">Como funciona</span>
+      <h2>Um processo simples, estratégico e focado em transformar sua ideia em resultado.</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-item reveal">
+        <span class="process-step">01</span>
+        <h3>Diagnóstico</h3>
+        <p>Entendemos o momento da sua empresa, seus desafios, objetivos e oportunidades de crescimento.</p>
+      </div>
+      <div class="process-item reveal">
+        <span class="process-step">02</span>
+        <h3>Estratégia</h3>
+        <p>Criamos um plano claro com as soluções mais adequadas para gerar impacto no seu negócio.</p>
+      </div>
+      <div class="process-item reveal">
+        <span class="process-step">03</span>
+        <h3>Desenvolvimento</h3>
+        <p>Construímos sua landing page, design, automação, agente de IA ou solução tech com qualidade profissional.</p>
+      </div>
+      <div class="process-item reveal">
+        <span class="process-step">04</span>
+        <h3>Implementação</h3>
+        <p>Colocamos a solução em funcionamento, ajustamos os detalhes e deixamos tudo pronto para operar.</p>
+      </div>
+      <div class="process-item reveal">
+        <span class="process-step">05</span>
+        <h3>Otimização</h3>
+        <p>Acompanhamos oportunidades de melhoria para aumentar performance, conversão e eficiência.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFORMAÇÃO -->
+<section class="transform-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">A virada</span>
+      <h2>Sua empresa não precisa trabalhar mais. Precisa trabalhar melhor.</h2>
+      <p>Com a Hype IA, sua empresa ganha uma estrutura digital mais inteligente, profissional e preparada para crescer.</p>
+    </div>
+    <div class="transform-quote reveal">"A próxima fase da sua empresa começa quando você para de improvisar e começa a operar com inteligência."</div>
+  </div>
+</section>
+
+<!-- ECOSSISTEMA DE IA -->
+<section id="ecosistema">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">Ecossistema Hype IA</span>
+      <h2>Um ecossistema trabalhando em sintonia, para melhorar seu posicionamento, crescimento e faturamento, em tempo real, como uma única inteligência a serviço do seu negócio.</h2>
+    </div>
+
+    <div class="eco-wrap reveal">
+      <svg class="eco-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ecoHubGrad" cx="40%" cy="35%" r="70%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+            <stop offset="60%" stop-color="#ffffff" stop-opacity="0.04"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="ecoGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <g class="eco-rotate">
+
+          <!-- outer faint orbit ring -->
+          <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.6"/>
+
+          <!-- pentagon perimeter connections -->
+          <g stroke="rgba(255,255,255,0.13)" stroke-width="0.8" fill="none">
+            <line x1="200" y1="60"  x2="333" y2="157"/>
+            <line x1="333" y1="157" x2="282" y2="313"/>
+            <line x1="282" y1="313" x2="118" y2="313"/>
+            <line x1="118" y1="313" x2="67"  y2="157"/>
+            <line x1="67"  y1="157" x2="200" y2="60"/>
+          </g>
+
+          <!-- spokes: hub to each node -->
+          <g stroke="rgba(255,255,255,0.28)" stroke-width="0.9" fill="none">
+            <line x1="200" y1="200" x2="200" y2="60"/>
+            <line x1="200" y1="200" x2="333" y2="157"/>
+            <line x1="200" y1="200" x2="282" y2="313"/>
+            <line x1="200" y1="200" x2="118" y2="313"/>
+            <line x1="200" y1="200" x2="67"  y2="157"/>
+          </g>
+
+          <!-- traveling light pulses along spokes -->
+          <circle r="3.2" fill="#ffffff" opacity="0">
+            <animateMotion path="M200,200 L200,60" dur="2.6s" begin="0s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.85;1" dur="2.6s" begin="0s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="3.2" fill="#ffffff" opacity="0">
+            <animateMotion path="M200,200 L333,157" dur="3.1s" begin="0.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.85;1" dur="3.1s" begin="0.4s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="3.2" fill="#ffffff" opacity="0">
+            <animateMotion path="M200,200 L282,313" dur="2.8s" begin="0.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.85;1" dur="2.8s" begin="0.8s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="3.2" fill="#ffffff" opacity="0">
+            <animateMotion path="M200,200 L118,313" dur="3.4s" begin="0.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.85;1" dur="3.4s" begin="0.2s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="3.2" fill="#ffffff" opacity="0">
+            <animateMotion path="M200,200 L67,157" dur="2.9s" begin="0.6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.85;1" dur="2.9s" begin="0.6s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- outer nodes, each with its own glyph -->
+          <g class="eco-node" style="animation-delay:0s;">
+            <circle cx="200" cy="60" r="30" fill="url(#ecoGlow)"/>
+            <circle cx="200" cy="60" r="17" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+            <rect x="195" y="55" width="10" height="10" fill="none" stroke="#fff" stroke-width="1"/>
+          </g>
+          <g class="eco-node" style="animation-delay:0.5s;">
+            <circle cx="333" cy="157" r="30" fill="url(#ecoGlow)"/>
+            <circle cx="333" cy="157" r="17" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+            <path d="M333,150 L339,161 L327,161 Z" fill="none" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+          </g>
+          <g class="eco-node" style="animation-delay:1s;">
+            <circle cx="282" cy="313" r="30" fill="url(#ecoGlow)"/>
+            <circle cx="282" cy="313" r="17" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+            <circle cx="282" cy="313" r="5" fill="none" stroke="#fff" stroke-width="1"/>
+          </g>
+          <g class="eco-node" style="animation-delay:1.5s;">
+            <circle cx="118" cy="313" r="30" fill="url(#ecoGlow)"/>
+            <circle cx="118" cy="313" r="17" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+            <path d="M118,306 L125,313 L118,320 L111,313 Z" fill="none" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+          </g>
+          <g class="eco-node" style="animation-delay:2s;">
+            <circle cx="67" cy="157" r="30" fill="url(#ecoGlow)"/>
+            <circle cx="67" cy="157" r="17" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+            <path d="M67,151 L67,163 M61,157 L73,157" stroke="#fff" stroke-width="1"/>
+          </g>
+
+          <!-- central hub -->
+          <circle class="eco-hub-glow" cx="200" cy="200" r="52" fill="url(#ecoHubGrad)"/>
+          <circle class="eco-hub-core" cx="200" cy="200" r="28" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.65)" stroke-width="1"/>
+          <circle cx="200" cy="200" r="20" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.6"/>
+          <circle cx="200" cy="200" r="3" fill="#ffffff"/>
+
+        </g>
+      </svg>
+    </div>
+    <div class="eco-caption reveal">5 agentes · 1 operação · trabalho em tempo real</div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section id="para-quem">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">Para quem é</span>
+      <h2>A Hype IA é para empresas que querem crescer com mais estratégia.</h2>
+    </div>
+    <div class="for-grid">
+      <div class="for-item reveal"><span class="for-check"></span><p>Empresas que querem vender mais pela internet.</p></div>
+      <div class="for-item reveal"><span class="for-check"></span><p>Negócios que precisam melhorar sua presença digital.</p></div>
+      <div class="for-item reveal"><span class="for-check"></span><p>Marcas que desejam parecer mais profissionais.</p></div>
+      <div class="for-item reveal"><span class="for-check"></span><p>Empresas que recebem leads, mas não conseguem acompanhar todos.</p></div>
+      <div class="for-item reveal"><span class="for-check"></span><p>Times que querem produzir mais conteúdo em menos tempo.</p></div>
+      <div class="for-item reveal"><span class="for-check"></span><p>Negócios que querem automatizar processos comerciais e de marketing.</p></div>
+      <div class="for-item reveal"><span class="for-check"></span><p>Empresas que precisam de landing pages, sistemas, criativos e IA aplicada.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVA DE VALOR -->
+<section id="valor">
+  <div class="wrap">
+    <div class="proof-wrap reveal">
+      <span class="tag">Na prática</span>
+      <h2 style="font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,2.8vw,2.2rem);letter-spacing:-0.02em;">O que a Hype IA entrega na prática</h2>
+      <div class="proof-grid">
+        <div class="proof-item"><p>Mais clareza na comunicação da sua marca</p></div>
+        <div class="proof-item"><p>Mais velocidade no atendimento aos leads</p></div>
+        <div class="proof-item"><p>Mais produtividade no marketing</p></div>
+        <div class="proof-item"><p>Mais autoridade no digital</p></div>
+        <div class="proof-item"><p>Mais conversão nas campanhas</p></div>
+        <div class="proof-item"><p>Mais organização nos processos</p></div>
+        <div class="proof-item"><p>Mais oportunidades de venda</p></div>
+        <div class="proof-item"><p>Mais percepção de valor para o cliente</p></div>
+      </div>
+      <p class="proof-support">Não se trata apenas de usar inteligência artificial. Se trata de aplicar IA, marketing e tecnologia de forma estratégica para criar uma operação mais forte, moderna e lucrativa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final-cta" id="cta-final">
+  <div class="final-holo"></div>
+  <div class="final-ring" style="width:500px;height:500px;"></div>
+  <div class="final-ring" style="width:700px;height:700px;opacity:0.6;"></div>
+  <div class="final-ring" style="width:900px;height:900px;opacity:0.3;"></div>
+  <div class="wrap">
+    <h2 class="reveal">Pronto para colocar sua empresa no próximo nível?</h2>
+    <p class="section-sub reveal">A Hype IA cria a estrutura digital que sua empresa precisa para atrair mais clientes, vender melhor e crescer com inteligência.</p>
+    <div class="final-ctas reveal">
+      <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="btn btn-primary">Quero começar agora <span class="btn-arrow">→</span></a>
+      <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="btn btn-ghost">Falar com a Hype IA</a>
+    </div>
+    <div class="final-line reveal">O FUTURO NÃO ESPERA. E SUA EMPRESA TAMBÉM NÃO DEVERIA.</div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag">Tire suas dúvidas</span>
+      <h2>Perguntas frequentes</h2>
+    </div>
+
+    <div class="faq-list reveal">
+
+      <div class="faq-item">
+        <button class="faq-q">O que é a Hype IA?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>A Hype IA é uma empresa que une Inteligência Artificial, Marketing e Tecnologia para ajudar empresas a venderem mais, automatizarem processos e construírem uma presença digital mais forte, profissional e estratégica.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quais serviços a Hype IA oferece?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>A Hype IA oferece soluções como:</p>
+          <ul>
+            <li>Landing Pages de alta conversão.</li>
+            <li>Design de posts e carrosséis.</li>
+            <li>Agentes de IA para vendas.</li>
+            <li>Agentes de IA para marketing.</li>
+            <li>Soluções tech personalizadas.</li>
+            <li>Sistemas, integrações e estruturas digitais para empresas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Minha empresa precisa entender de tecnologia para contratar a Hype IA?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Não. A Hype IA cuida da parte estratégica, criativa e técnica para você. Nosso papel é entender o momento da sua empresa, identificar oportunidades e criar soluções práticas que ajudem seu negócio a crescer com mais inteligência.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Para quem são as soluções da Hype IA?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>As soluções da Hype IA são para empresas, empreendedores, prestadores de serviço, profissionais liberais e negócios que querem:</p>
+          <ul>
+            <li>Vender mais pela internet.</li>
+            <li>Melhorar sua presença digital.</li>
+            <li>Automatizar atendimento e processos.</li>
+            <li>Criar páginas profissionais.</li>
+            <li>Produzir conteúdo com mais estratégia.</li>
+            <li>Usar IA para ganhar produtividade e escala.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como os agentes de IA podem ajudar minha empresa?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Os agentes de IA podem ajudar sua empresa em tarefas como atendimento, qualificação de leads, criação de conteúdo, planejamento de marketing, suporte comercial, geração de ideias, organização de processos e automação de atividades repetitivas. Na prática, eles ajudam sua empresa a ganhar mais velocidade, produtividade e eficiência.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Uma landing page realmente pode aumentar minhas vendas?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Sim. Uma landing page bem construída ajuda a transformar visitantes em leads ou clientes, porque une design profissional, copy persuasiva, estrutura estratégica e foco total em conversão. Diferente de um site comum, uma landing page tem um objetivo claro: fazer o visitante tomar uma ação.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">A Hype IA também cria posts para redes sociais?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Sim. Criamos posts, carrosséis e criativos com design profissional e estratégia de comunicação para fortalecer a marca, aumentar a percepção de valor e gerar mais engajamento com o público certo.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">As soluções são personalizadas para cada empresa?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Sim. Cada empresa tem um momento, uma oferta e uma necessidade diferente. Por isso, a Hype IA analisa o cenário do negócio antes de criar qualquer solução, garantindo que a estratégia esteja alinhada com o objetivo da empresa.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quanto tempo leva para desenvolver uma solução?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>O prazo depende do tipo de projeto. Uma landing page, uma automação ou um agente de IA possuem níveis diferentes de complexidade. Após entendermos a necessidade da sua empresa, apresentamos uma estimativa clara de prazo e entrega.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Preciso contratar todos os serviços de uma vez?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Não. Você pode começar com a solução que faz mais sentido para o momento da sua empresa, como uma landing page, um agente de IA, design de posts ou uma automação específica. Depois, a estrutura pode evoluir conforme o crescimento do seu negócio.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">A Hype IA substitui minha equipe de marketing ou vendas?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Não necessariamente. A Hype IA pode tanto complementar sua equipe quanto criar uma estrutura do zero para empresas que ainda não possuem marketing, vendas ou tecnologia bem definidos. O objetivo é tornar sua operação mais inteligente, produtiva e preparada para vender mais.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como faço para começar?<span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Basta entrar em contato com a Hype IA e solicitar um diagnóstico inicial. Vamos entender o momento da sua empresa, identificar oportunidades e indicar a melhor solução para ajudar seu negócio a crescer com IA, Marketing e Tecnologia.</p></div>
+      </div>
+
+    </div>
+
+    <div class="faq-cta-row reveal">
+      <a href="https://wa.me/5511914282773?text=Ol%C3%A1,%20quero%20fazer%20parte%20do%20futuro!" target="_blank" rel="noopener" class="btn btn-primary">Quero transformar minha empresa com IA <span class="btn-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <p>© 2026 Hype IA. Todos os direitos reservados.</p>
+    <span class="footer-motto">SOMOS LOUCOS E INCONFORMADOS</span>
+  </div>
+</footer>
+
+<script>
+// ---- typing effect ----
+const words = ["IA","Marketing","Automação","Tecnologia","Vendas","Escala"];
+const typedEl = document.getElementById('typed');
+let wi = 0, ci = 0, deleting = false;
+
+function tick(){
+  const current = words[wi];
+  if(!deleting){
+    ci++;
+    typedEl.textContent = current.slice(0, ci);
+    if(ci === current.length){
+      deleting = true;
+      setTimeout(tick, 1400);
+      return;
+    }
+  } else {
+    ci--;
+    typedEl.textContent = current.slice(0, ci);
+    if(ci === 0){
+      deleting = false;
+      wi = (wi + 1) % words.length;
+    }
+  }
+  setTimeout(tick, deleting ? 45 : 85);
+}
+typedEl.textContent = "";
+setTimeout(tick, 900);
+
+// ---- nav scroll state ----
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ---- scroll reveal ----
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.06 + 's';
+  io.observe(el);
+});
+
+// ---- faq accordion ----
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  q.addEventListener('click', () => {
+    item.classList.toggle('open');
+  });
+});
+
+// ---- hologram particles ----
+const particleHost = document.getElementById('particles');
+const radii = [110, 140, 165];
+for(let i = 0; i < 18; i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const r = radii[i % radii.length] + (Math.random()*10-5);
+  const dur = 14 + Math.random()*14;
+  const delay = -Math.random()*dur;
+  const size = 1.5 + Math.random()*2;
+  p.style.setProperty('--r', r + 'px');
+  p.style.width = size + 'px';
+  p.style.height = size + 'px';
+  p.style.top = '50%';
+  p.style.left = '50%';
+  p.style.marginTop = -(size/2) + 'px';
+  p.style.marginLeft = -(size/2) + 'px';
+  p.style.animationDuration = dur + 's';
+  p.style.animationDelay = delay + 's';
+  p.style.opacity = 0.3 + Math.random()*0.5;
+  particleHost.appendChild(p);
+}
+</script>
+</body>
+</html>
